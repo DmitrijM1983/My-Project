@@ -21,8 +21,8 @@ class User
      */
     public function registration(array $array): void
     {
-        $sql = "INSERT INTO users(id,user_name, email, password,role)
-        VALUES (:id,:user_name, :email, :password,:role)";
+        $sql = "INSERT INTO users(user_name, email, password,role)
+        VALUES (:user_name, :email, :password,:role)";
         $statement = $this->connection->prepare($sql);
         $statement->execute($array);
     }
@@ -44,7 +44,7 @@ class User
             exit;
         }
         if ($result['password'] === $password) {
-            echo 'Вы вошли'; //редирект будет
+            echo 'Привет, ' . $result['user_name'] . '!'; //редирект будет
         } else {
             echo 'Пароль неверен!'; // тоже
         }
