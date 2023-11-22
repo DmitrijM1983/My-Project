@@ -58,11 +58,3 @@ if (!empty($_POST['user_name']) && !empty($_POST['email']) && !empty($_POST['pas
 } else {
     echo 'Заполните корректно все поля!';
 }
-
-
-
-
-
-//</div>
-//        <a href="#" class="btn btn-primary" role="button" data-bs-toggle="button">Зарегистрироваться</a>
-//        </form>
