@@ -21,30 +21,32 @@ class User
      */
     public function registration(array $array): void
     {
-        $sql = "INSERT INTO users(id,user_name,password,role)
-        VALUES (:id,:user_name,:password,:role)";
+        $sql = "INSERT INTO users(id,user_name, email, password,role)
+        VALUES (:id,:user_name, :email, :password,:role)";
         $statement = $this->connection->prepare($sql);
         $statement->execute($array);
     }
 
     /**
      *
-     * @param array $array
+     * @param string $email
+     * @param string $password
      * @return void
      */
-    public function login(array $array): void
+    public function login(string $email, string $password): void
     {
-        $sql = "SELECT * FROM `users`";
+        $sql = "SELECT * FROM `users` WHERE email = :email";
         $statement = $this->connection->prepare($sql);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($result as $value) {
-            if ($value['user_name'] === $array['user_name'] && $value['password'] === $array['password']) {
-                echo 'Добро пожаловать!';
-                break;
-                } else {
-                echo 'Логин или пароль не верны!';
-            }
+        $statement->execute(['email' => $email]);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            echo 'Пользователь не найден';
+            exit;
+        }
+        if ($result['password'] === $password) {
+            echo 'Вы вошли'; //редирект будет
+        } else {
+            echo 'Пароль неверен!'; // тоже
         }
     }
 }

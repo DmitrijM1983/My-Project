@@ -20,13 +20,13 @@
     <H1>Войти</H1>
     <form action="login.php" method="post">
         <div class="mb-3">
-            <input type="email" name="user_name" class="form-control"  aria-describedby="emailHelp" placeholder="Введите email">
+            <input type="name" name="email" class="form-control" placeholder="Введите электронную почту">
         </div>
         <div class="mb-3">
             <input type="password" name="password" class="form-control"  placeholder="Введите пароль">
         </div>
         <div class="mb-3">
-            <input type="submit">
+            <button class="btn btn-success">Войти</button>
         </div>
     </form>
 </body>
@@ -36,19 +36,13 @@
 
 require_once 'User.php';
 
-if (!empty($_POST['user_name']) && !empty($_POST['password'])) {
-    $params = array(
-        'user_name' => $_POST['user_name'],
-        'password' => md5($_POST['password']),
-    );
+if (!empty($_POST['email']) && !empty($_POST['password'])) {
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
     $user = new User();
-    $user->login($params);
+    $user->login($email, $password);
+} else {
+    echo 'Заполните корректно все поля!';
 }
 
 
-
-//if (($result['user_name'] === $params['user_name']) && ($result['password'] === $params['password'])) {
-//echo 'Добро пожаловать';
-//} else {
-//echo 'Логин или пароль введены не верно!';
-//}
