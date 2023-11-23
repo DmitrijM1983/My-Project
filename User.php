@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 class User
 {
     private \PDO $connection;
@@ -31,22 +33,24 @@ class User
      *
      * @param string $email
      * @param string $password
-     * @return void
+     * @return array
      */
     public function login(string $email, string $password): void
     {
+        $_SESSION['result'] = [];
         $sql = "SELECT * FROM `users` WHERE email = :email";
         $statement = $this->connection->prepare($sql);
         $statement->execute(['email' => $email]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
-            echo 'Пользователь не найден';
-            exit;
-        }
-        if ($result['password'] === $password) {
-            echo 'Привет, ' . $result['user_name'] . '!'; //редирект будет
+            $_SESSION['result']['userError'] = 'Пользователь не найден!';
+            header('Location: ../../login.php');
+        } elseif ($result['password'] != $password || empty($password)) {
+            $_SESSION['result']['passwordError'] = 'Не правильный пароль!';
+            header('Location: ../../login.php');
         } else {
-            echo 'Пароль неверен!'; // тоже
+            $_SESSION['result']['name'] = $result['user_name'];
+            header('Location: /home.php');
         }
     }
 }
