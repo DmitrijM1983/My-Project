@@ -14,6 +14,6 @@ session_start();
     <title>Главный пэйдж</title>
 </head>
 <body>
-<h1>Привет, <?=$_SESSION['result']['name']?>!</h1>
+<h1>Привет, <?=$_SESSION['auth']['name']?>!</h1>
 </body>
 </html>

@@ -38,19 +38,19 @@ session_start();
 <div class="form">
     <div class="content">
     <H1>Войти</H1>
-    <form action="src/actions/login.php" method="post">
+    <form action="src/handlers/auth.php" method="post">
         <div class="mb-3">
-            <small class="text"><?=$_SESSION['result']['userError'] ?? ''?></small>
+            <small class="text"><?=$_SESSION['auth']['userError'] ?? ''?></small>
             <input type="name" name="email" class="form-control" value="<?=$_SESSION['old']['email'] ?? ''?>"
             placeholder="Введите электронную почту" required>
         </div>
-        <small class="text"><?=$_SESSION['result']['passwordError'] ?? ''?></small>
+        <small class="text"><?=$_SESSION['auth']['passwordError'] ?? ''?></small>
         <div class="mb-3">
             <input type="password" name="password" class="form-control"  placeholder="Введите пароль">
         </div>
         <div class="button">
             <div class="mb-3">
-                <button class="btn btn-success">Войти</button>
+                <button type="submit" class="btn btn-success">Войти</button>
             </div>
             <div class="mb-3">
                 <a href="reg.php" class="btn btn-info">Зарегистрироваться</a>
@@ -63,6 +63,5 @@ session_start();
 
 <?php
 
-$_SESSION['old'] = [];
-$_SESSION['result'] = [];
+$_SESSION['auth'] = [];
 

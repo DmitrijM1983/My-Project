@@ -44,5 +44,4 @@ if (empty($_SESSION['validation'])) {
     );
     $user = new User();
     $user->registration($params);
-    header('location: ../../login.php');
 }

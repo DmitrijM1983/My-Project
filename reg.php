@@ -39,7 +39,7 @@ session_start();
     <div class="form">
         <div class="content">
             <H1>Регистрация</H1>
-            <form action="src/actions/register.php" method="post">
+            <form action="src/handlers/signup.php" method="post">
                 <small class="text"><?=$_SESSION['validation']['name'] ?? ''?></small>
                 <div class="mb-3">
                     <input type="name" name="user_name" class="form-control" value="<?=$_SESSION['old']['name'] ?? ''?>"
@@ -59,7 +59,7 @@ session_start();
                 </div>
                 <div class="button">
                 <div class="mb-3">
-                    <button class="btn btn-info">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-info">Зарегистрироваться</button>
                 </div>
                 <div class="mb-3">
                     <a href="login.php" class="btn btn-success">Войти</a>
@@ -72,11 +72,6 @@ session_start();
 </html>
 
 <?php
-
+// после перезагрузки очишаем сессии, чтобы не подсвечивались ошибки
 $_SESSION['validation'] = [];
 $_SESSION['old'] = [];
-
-?>
-
-
-
