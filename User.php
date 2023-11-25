@@ -21,7 +21,7 @@ class User
      *
      * @return void
      */
-    public function registration(array $array): void
+    public function checkUser(array $array): void
     {
         $_SESSION['validation'] = [];
         $checkUser = "SELECT * FROM `users` WHERE email = :email";
@@ -37,12 +37,23 @@ class User
             header('Location: ../../reg.php');
             exit;
         } else {
-            $sql = "INSERT INTO users(user_name, email, password,role)
+            $_SESSION['validation']['role'] = $result['role'];
+            $this->registration($array);
+        }
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return void
+     */
+    public function registration(array $array): void
+    {
+        $sql = "INSERT INTO users(user_name, email, password,role)
         VALUES (:user_name, :email, :password,:role)";
             $statement = $this->connection->prepare($sql);
             $statement->execute($array);
             header('location: ../../login.php');
-        }
     }
 
     /**
@@ -67,6 +78,7 @@ class User
             header('Location: ../../login.php');
         } else {
             $_SESSION['auth']['name'] = $result['user_name'];
+            $_SESSION['auth']['role'] = $result['role'];
             header('Location: /home.php');
         }
     }

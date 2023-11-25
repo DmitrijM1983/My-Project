@@ -43,5 +43,5 @@ if (empty($_SESSION['validation'])) {
         'role' => 'user'
     );
     $user = new User();
-    $user->registration($params);
+    $user->checkUser($params);
 }
