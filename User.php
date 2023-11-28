@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 class User
 {
     private \PDO $connection;
@@ -21,32 +23,51 @@ class User
      */
     public function registration(array $array): void
     {
-        $sql = "INSERT INTO users(id,user_name, email, password,role)
-        VALUES (:id,:user_name, :email, :password,:role)";
-        $statement = $this->connection->prepare($sql);
-        $statement->execute($array);
+        $_SESSION['validation'] = [];
+        $checkUser = "SELECT * FROM `users` WHERE email = :email";
+        $statement = $this->connection->prepare($checkUser);
+        $statement->execute(['email' => $array['email']]);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($array['user_name'] === $result['user_name']) {
+            $_SESSION['validation']['name'] = 'Это имя уже используется!';
+            header('Location: ../../reg.php');
+            exit;
+        } elseif ($array['email'] === $result['email']) {
+            $_SESSION['validation']['email'] = 'Пользователь с такой почтой уже зарегистрирован!';
+            header('Location: ../../reg.php');
+            exit;
+        } else {
+            $sql = "INSERT INTO users(user_name, email, password,role)
+        VALUES (:user_name, :email, :password,:role)";
+            $statement = $this->connection->prepare($sql);
+            $statement->execute($array);
+            header('location: ../../login.php');
+        }
     }
 
     /**
      *
      * @param string $email
      * @param string $password
+     *
      * @return void
      */
     public function login(string $email, string $password): void
     {
+        $_SESSION['auth'] = [];
         $sql = "SELECT * FROM `users` WHERE email = :email";
         $statement = $this->connection->prepare($sql);
         $statement->execute(['email' => $email]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result === false) {
-            echo 'Пользователь не найден';
-            exit;
-        }
-        if ($result['password'] === $password) {
-            echo 'Вы вошли'; //редирект будет
+            $_SESSION['auth']['userError'] = 'Пользователь не найден!';
+            header('Location: ../../login.php');
+        } elseif ($result['password'] != $password || empty($password)) {
+            $_SESSION['auth']['passwordError'] = 'Не правильный пароль!';
+            header('Location: ../../login.php');
         } else {
-            echo 'Пароль неверен!'; // тоже
+            $_SESSION['auth']['name'] = $result['user_name'];
+            header('Location: /home.php');
         }
     }
 }
