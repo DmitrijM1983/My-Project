@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once '../../User.php';
+require_once '../../Classes/User.php';
 
 $userName = $_POST['user_name'];
 $email = $_POST['email'];
@@ -43,5 +43,5 @@ if (empty($_SESSION['validation'])) {
         'role' => 'user'
     );
     $user = new User();
-    $user->registration($params);
+    $user->checkUser($params);
 }
