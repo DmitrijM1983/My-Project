@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once '../../User.php';
+require_once '../../Classes/User.php';
 
 if (!empty($_POST['password'])) {
     $email = $_POST['email'];
