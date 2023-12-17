@@ -11,7 +11,7 @@ if ($type === 'audio/mpeg' || $type === 'audio/flac') {
     $tmp = $_FILES['file']['tmp_name'];
     $name = $_FILES['file']['name'];
     $file = new File();
-    $file->load($tmp, $name);
+    $file->checkFile($tmp, $name);
 } else {
     $_SESSION['validation']['typeError'] = 'Неподдерживаемый формат!';
     header('Location: ../../home.php');

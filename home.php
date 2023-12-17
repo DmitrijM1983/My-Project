@@ -35,3 +35,8 @@ require_once 'autoload.php';
 <p class="text"><?=$_SESSION['file']['loadError'] ?? ''?></p>
 </body>
 </html>
+
+<?php
+
+$_SESSION['validation'] = [];
+$_SESSION['file'] = [];
